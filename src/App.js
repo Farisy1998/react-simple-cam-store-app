@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
+import Items from './components/items';
+import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/navBar';
+import NotFound from './components/notFound';
+import Customers from './components/customers';
+import LoginForm from './components/loginForm';
+import RegisterForm from './components/registerForm';
 import './App.css';
+import ItemForm from './components/itemForm';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Items />} />
+        <Route path="/items/:id" element={<ItemForm />} />
+        <Route path="/customers" element={<Customers />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
+    </React.Fragment>
   );
 }
 
