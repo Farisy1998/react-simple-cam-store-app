@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getItems } from "./../services/items";
+import { getItems, deleteItem } from "./../services/items";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import { getCategories } from "../services/categories";
@@ -7,6 +7,7 @@ import ListGroup from "./common/listGroup";
 import ItemsTable from "./itemsTable";
 import _ from "lodash";
 import SearchBox from "./common/searchBox";
+import { Link } from "react-router-dom";
 
 class Items extends Component {
   state = {
@@ -15,12 +16,12 @@ class Items extends Component {
     selectedCategory: {},
     sortColumn: { path: "itemName", order: "asc" },
     searchQuery: "",
-    pageSize: 4,
+    pageSize: 3,
     currentPage: 1,
   };
 
   componentDidMount() {
-    const items = [...getItems()];
+    const items = getItems();
     const transformedItems = items.map((item) => {
       const newItem = { ...item, like: false };
       return newItem;
@@ -38,9 +39,9 @@ class Items extends Component {
   }
 
   handleDelete = (item) => {
-    const items = [...this.state.items];
-    const filteredItems = items.filter((i) => i._id !== item._id);
-    this.setState({ items: filteredItems });
+    console.log('clicked, delete');
+    const transformedItems = deleteItem(item);
+    this.setState({ items: transformedItems });
   };
 
   handleLike = (item) => {
@@ -64,7 +65,7 @@ class Items extends Component {
 
   handleSort = (path) => {
     const sortColumn = { ...this.state.sortColumn };
-    if (sortColumn.path === path) {
+    if (path === sortColumn.path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
     } else {
       sortColumn.path = path;
@@ -78,14 +79,13 @@ class Items extends Component {
     this.setState({ searchQuery: query, selectedCategory: {}, currentPage: 1 });
   };
 
-  render() {
+  getPagedItems = () => {
     const {
       items: allItems,
-      categories,
-      pageSize,
-      currentPage,
       selectedCategory,
       sortColumn,
+      pageSize,
+      currentPage,
       searchQuery,
     } = this.state;
 
@@ -105,15 +105,29 @@ class Items extends Component {
 
     const itemsCount = filteredItems.length;
 
-    const paginatedItems = paginate(filteredItems, pageSize, currentPage);
-
     const sortedItems = _.orderBy(
-      paginatedItems,
-      sortColumn.path,
-      sortColumn.order
+      filteredItems,
+      [sortColumn.path],
+      [sortColumn.order]
     );
 
-    const transformedItems = sortedItems;
+    const paginatedItems = paginate(sortedItems, pageSize, currentPage);
+
+    return { itemsCount, paginatedItems };
+  };
+
+  render() {
+    const {
+      categories,
+      pageSize,
+      currentPage,
+      selectedCategory,
+      sortColumn,
+      searchQuery,
+    } = this.state;
+
+    const { itemsCount } = this.getPagedItems();
+    const { paginatedItems } = this.getPagedItems();
 
     return (
       <div className="row mx-2">
@@ -125,6 +139,9 @@ class Items extends Component {
           />
         </div>
         <div className="col col-9">
+          <Link to="items/new" className="btn btn-primary">
+            New Item
+          </Link>
           {itemsCount === 0 ? (
             <p className="my-2">There are no items in database.</p>
           ) : (
@@ -135,7 +152,7 @@ class Items extends Component {
               </p>
               <SearchBox onSearch={this.handleSearch} query={searchQuery} />
               <ItemsTable
-                items={transformedItems}
+                items={paginatedItems}
                 sortColumn={sortColumn}
                 onLike={this.handleLike}
                 onDelete={this.handleDelete}

@@ -2,13 +2,13 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand navbar-light bg-light px-3">
+    <nav className="navbar navbar-expand navbar-dark bg-primary px-3">
       <span className="navbar-brand">
         <i className="fa fa-shopping-bag"></i>
       </span>
       <ul className="navbar-nav">
         <li className="navbar-item">
-          <NavLink className="nav-link" to="/">
+          <NavLink className="nav-link" to="/items">
             Home
           </NavLink>
         </li>

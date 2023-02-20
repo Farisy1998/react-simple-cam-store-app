@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 class ItemsTable extends Component {
   columns = [
     {
-      path: "itemName",
-      content: (item) => <Link to={`items/${item._id}`}>{item.itemName}</Link>,
+      path: "name",
+      content: (item) => <Link to={`items/${item._id}`}>{item.name}</Link>,
       label: "Name",
     },
     { path: "category.name", label: "Category" },

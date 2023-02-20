@@ -12,7 +12,9 @@ const Pagination = ({ pageSize, currentPage, itemsCount, onPageChange }) => {
           className={page === currentPage ? "page-item active" : "page-item"}
         >
           <a
-            className="page-link"
+            className={
+              page === currentPage ? "page-link" : "page-link text-dark"
+            }
             style={{ cursor: "pointer" }}
             onClick={() => onPageChange(page)}
           >

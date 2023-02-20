@@ -1,8 +1,8 @@
-export const categories = [
-    { _id: "1", name: "DSLR Cameras" },
-    { _id: "2", name: "Point & Shoot Cameras" },
-    { _id: "3", name: "Mirrorless Cameras" },
-    { _id: "4", name: "Instant Cameras" },
+const categories = [
+    { _id: "1", name: "DSLR Camera" },
+    { _id: "2", name: "Point & Shoot Camera" },
+    { _id: "3", name: "Mirrorless Camera" },
+    { _id: "4", name: "Instant Camera" },
 ];
 
 

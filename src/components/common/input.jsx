@@ -1,10 +1,20 @@
-const Input = ({name, label, type, onChange}) => {
+const Input = ({name, label, value, error, type, onChange}) => {
     return (
-      <div className="mb-3">
+      <div className="form-group mb-3">
         <label htmlFor={name} className="form-label">
           {label}
         </label>
-        <input id={name} type={type} className="form-control" onChange={event => onChange(event)}/>
+        <input
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          type={type}
+          className="form-control"
+        />
+        {error && (
+          <div className="alert alert-danger">{error}</div>
+        )}
       </div>
     );
 }
